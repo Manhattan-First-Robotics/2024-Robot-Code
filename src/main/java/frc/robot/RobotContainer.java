@@ -4,60 +4,127 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.PS4Controller;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.ClawConstants;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LightSubsytem;
+import frc.robot.subsystems.TelescopingSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
+ * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  // The robot's subsystems
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+  private final TelescopingSubsystem m_telescopingSubsystem = new TelescopingSubsystem();
+  private final ClawSubsystem m_clawSubsystem = new ClawSubsystem();
+  private final LightSubsytem m_LightSubsytem = new LightSubsytem();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  // Retained command handles
+
+  // A chooser for autonomous commands
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  // The driver's controller
+  CommandXboxController m_driverController =
+      new CommandXboxController(OIConstants.kDriverControllerPort);
+
+  CommandXboxController m_armController =
+      new CommandXboxController(OIConstants.kArmControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
+    SmartDashboard.putNumber("AutoWaitTime", AutoConstants.autoWaitTime);
+    SmartDashboard.putNumber("AutoDriveSpeed", AutoConstants.autoDriveSpeed);
+    SmartDashboard.putNumber("AutoDriveTime", AutoConstants.autoDriveDuration);
+
+    // Configure the button bindings
+    configureButtonBindings();
+
+    // Configure default commands
+    // Set the default drive command to split-stick arcade drive
+    m_robotDrive.setDefaultCommand(
+        // A split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+        Commands.run(
+            () ->
+                m_robotDrive.curvatureDrive(
+                    -m_driverController.getLeftY(), -m_driverController.getRightX()),
+            m_robotDrive));
+    
+    m_telescopingSubsystem.setDefaultCommand(Commands.run(() -> m_telescopingSubsystem.setArmSpeed(m_armController.getRightY()), m_telescopingSubsystem));
+
+    m_armSubsystem.setDefaultCommand(Commands.run(() -> m_armSubsystem.setArmSpeed(m_armController.getLeftY()), m_armSubsystem));
+
+    m_clawSubsystem.setDefaultCommand(Commands.run(() -> m_clawSubsystem.setClawSpeed(m_armController.getLeftTriggerAxis() - m_armController.getRightTriggerAxis()), m_clawSubsystem));
+
+    //Initialize the lights
+    m_LightSubsytem.InitializeLights();
+    
+    // Put the chooser on the dashboard
+    Shuffleboard.getTab("Autonomous").add(m_chooser);
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
+   * Use this method to define your button->command mappings. Buttons can be created by
+   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link PS4Controller}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+  private void configureButtonBindings() {
+    m_armController.rightBumper().whileTrue(Commands.runOnce(() -> m_armSubsystem.setArmSpeed(ClawConstants.clawHoldSpeed)));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController.a().onTrue(Commands.runOnce(() -> m_LightSubsytem.ChangeLightState(0)));
+    m_driverController.x().onTrue(Commands.runOnce(() -> m_LightSubsytem.ChangeLightState(1)));
+    m_driverController.y().onTrue(Commands.runOnce(() -> m_LightSubsytem.ChangeLightState(2)));
+
+    m_driverController.start().whileTrue(Commands.runOnce(() -> m_robotDrive.Balance(), m_robotDrive))
+      .onFalse(Commands.runOnce(() -> m_robotDrive.arcadeDrive(0, 0), m_robotDrive));
+
+    //Rotate towards the starting direction or the other direction when bumpers are held
+    m_driverController.rightBumper()
+      .whileTrue(Commands.runOnce(() -> m_robotDrive.RotateTo(0)));
+    m_driverController.leftBumper()
+      .whileTrue(Commands.runOnce(() -> m_robotDrive.RotateTo(180)));
+
+    // While holding Right Trigger, drive at half speed
+    m_driverController
+        .rightTrigger()
+        .onTrue(Commands.runOnce(() -> m_robotDrive.setMaxOutput(0.5)))
+        .onFalse(Commands.runOnce(() -> m_robotDrive.setMaxOutput(1)));
+    
+    m_driverController
+        .leftTrigger()
+        .onTrue(Commands.runOnce(() -> m_robotDrive.setMaxOutput(0.25)))
+        .onFalse(Commands.runOnce(() -> m_robotDrive.setMaxOutput(1)));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return new SequentialCommandGroup(
+          new ParallelRaceGroup(
+            Commands.waitSeconds(SmartDashboard.getNumber("AutoWaitTime", AutoConstants.autoWaitTime)),
+            Commands.run(() -> m_robotDrive.arcadeDrive(0, 0), m_robotDrive)
+          ),
+          new ParallelRaceGroup(
+            Commands.waitSeconds(SmartDashboard.getNumber("AutoDriveTime", AutoConstants.autoDriveDuration)),
+            Commands.run(() -> m_robotDrive.arcadeDrive(SmartDashboard.getNumber("AutoDriveSpeed", AutoConstants.autoDriveSpeed), 0), m_robotDrive)
+          )
+        );
   }
 }
