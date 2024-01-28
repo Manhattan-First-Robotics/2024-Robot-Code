@@ -4,9 +4,15 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utility.AdvantageKitHelper;
+import frc.robot.utility.RobotIdentity;
+
+import static frc.robot.Constants.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -14,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot  {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -25,8 +31,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
+            // Determine the robot identity
+        RobotIdentity identity = RobotIdentity.getIdentity();
+
+
+        System.out.println("=====Detected identity: " + identity);
+
+        AdvantageKitHelper.setupLogger(COMPETITION_MODE);
+
+        Logger.recordMetadata("CompetitionMode", Boolean.toString(COMPETITION_MODE));
+        Logger.recordMetadata("RobotIdentity", RobotIdentity.getIdentity().toString());
+
+        Logger.start();
     m_robotContainer = new RobotContainer();
   }
 
@@ -56,12 +72,10 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    System.out.println("Auto Init");
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    System.out.println("Auto Command: " + m_autonomousCommand);
+
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      System.out.println("Auto Command starting: " + m_autonomousCommand);
       m_autonomousCommand.schedule();
     }
   }
@@ -94,4 +108,12 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
+  /** This function is called once when the robot is first started up. */
+  @Override
+  public void simulationInit() {}
+
+  /** This function is called periodically whilst in simulation. */
+  @Override
+  public void simulationPeriodic() {}
 }

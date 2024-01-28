@@ -4,127 +4,79 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.PS4Controller;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.ClawConstants;
-import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LightSubsytem;
-import frc.robot.subsystems.TelescopingSubsystem;
-import frc.robot.subsystems.ClawSubsystem;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import static frc.robot.Constants.DRIVE_CONTROLLER_PORT;
+
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.AutoCommandConfig;
+import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.utility.AutoCommandChooser;
+import frc.robot.utility.RobotIdentity;
+import frc.robot.utility.SubsystemFactory;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-  private final TelescopingSubsystem m_telescopingSubsystem = new TelescopingSubsystem();
-  private final ClawSubsystem m_clawSubsystem = new ClawSubsystem();
-  private final LightSubsytem m_LightSubsytem = new LightSubsytem();
 
-  // Retained command handles
+  private RobotIdentity identity;
 
-  // A chooser for autonomous commands
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private Drive driveSubsystem;
 
-  // The driver's controller
-  CommandXboxController m_driverController =
-      new CommandXboxController(OIConstants.kDriverControllerPort);
+  private DefaultDriveCommand defaultDriveCommand;
 
-  CommandXboxController m_armController =
-      new CommandXboxController(OIConstants.kArmControllerPort);
+  private AutoCommandChooser autoChooser;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  // The robot's subsystems and commands are defined here...
+
+  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController driverController = new CommandXboxController(DRIVE_CONTROLLER_PORT);
+
   public RobotContainer() {
-    SmartDashboard.putNumber("AutoWaitTime", AutoConstants.autoWaitTime);
-    SmartDashboard.putNumber("AutoDriveSpeed", AutoConstants.autoDriveSpeed);
-    SmartDashboard.putNumber("AutoDriveTime", AutoConstants.autoDriveDuration);
+    identity = RobotIdentity.getIdentity();
 
-    // Configure the button bindings
-    configureButtonBindings();
-
-    // Configure default commands
-    // Set the default drive command to split-stick arcade drive
-    m_robotDrive.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        Commands.run(
-            () ->
-                m_robotDrive.curvatureDrive(
-                    -m_driverController.getLeftY(), -m_driverController.getRightX()),
-            m_robotDrive));
-    
-    m_telescopingSubsystem.setDefaultCommand(Commands.run(() -> m_telescopingSubsystem.setArmSpeed(m_armController.getRightY()), m_telescopingSubsystem));
-
-    m_armSubsystem.setDefaultCommand(Commands.run(() -> m_armSubsystem.setArmSpeed(m_armController.getLeftY()), m_armSubsystem));
-
-    m_clawSubsystem.setDefaultCommand(Commands.run(() -> m_clawSubsystem.setClawSpeed(m_armController.getLeftTriggerAxis() - m_armController.getRightTriggerAxis()), m_clawSubsystem));
-
-    //Initialize the lights
-    m_LightSubsytem.InitializeLights();
-    
-    // Put the chooser on the dashboard
-    Shuffleboard.getTab("Autonomous").add(m_chooser);
+    createSubsystems(); // Create our subsystems.
+    createCommands(); // Create our commands
+    configureButtonBindings(); // Configure the button bindings
+    setupAutoChooser(); // Setup the auto chooser
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link PS4Controller}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
+  private void createSubsystems() {
+    driveSubsystem = SubsystemFactory.createDriveTrain(identity);
+
+    AutoCommandConfig.init(driveSubsystem);
+
+  }
+
+  private void createCommands() {
+    defaultDriveCommand = new DefaultDriveCommand(driveSubsystem,
+        () -> driverController.getLeftTriggerAxis() - driverController.getRightTriggerAxis(),
+        () -> -driverController.getLeftX());
+    driveSubsystem.setDefaultCommand(defaultDriveCommand);
+  }
+
   private void configureButtonBindings() {
-    m_armController.rightBumper().whileTrue(Commands.runOnce(() -> m_armSubsystem.setArmSpeed(ClawConstants.clawHoldSpeed)));
-
-    m_driverController.a().onTrue(Commands.runOnce(() -> m_LightSubsytem.ChangeLightState(0)));
-    m_driverController.x().onTrue(Commands.runOnce(() -> m_LightSubsytem.ChangeLightState(1)));
-    m_driverController.y().onTrue(Commands.runOnce(() -> m_LightSubsytem.ChangeLightState(2)));
-
-    m_driverController.start().whileTrue(Commands.runOnce(() -> m_robotDrive.Balance(), m_robotDrive))
-      .onFalse(Commands.runOnce(() -> m_robotDrive.arcadeDrive(0, 0), m_robotDrive));
-
-    //Rotate towards the starting direction or the other direction when bumpers are held
-    m_driverController.rightBumper()
-      .whileTrue(Commands.runOnce(() -> m_robotDrive.RotateTo(0)));
-    m_driverController.leftBumper()
-      .whileTrue(Commands.runOnce(() -> m_robotDrive.RotateTo(180)));
-
-    // While holding Right Trigger, drive at half speed
-    m_driverController
-        .rightTrigger()
-        .onTrue(Commands.runOnce(() -> m_robotDrive.setMaxOutput(0.5)))
-        .onFalse(Commands.runOnce(() -> m_robotDrive.setMaxOutput(1)));
-    
-    m_driverController
-        .leftTrigger()
-        .onTrue(Commands.runOnce(() -> m_robotDrive.setMaxOutput(0.25)))
-        .onFalse(Commands.runOnce(() -> m_robotDrive.setMaxOutput(1)));
+    driverController.start().onTrue(new InstantCommand(() -> driveSubsystem.resetPose()));
+    driverController.back().onTrue(new InstantCommand(() -> driveSubsystem.resetGyro()));
   }
+
+  private void setupAutoChooser() {
+    autoChooser = new AutoCommandChooser();
+
+    // Register all the supported auto commands
+    autoChooser.registerDefaultCreator("Do Nothing", null);
+
+    // Test auto commands that we only register with the chooser if we are not running in competition
+    if (!Constants.COMPETITION_MODE) {
+        autoChooser.registerCreator("Test", () -> new PathPlannerAuto("TestAuto"));
+    }
+
+    // Setup the chooser in shuffleboard
+    autoChooser.setup("Driver", 0, 0, 3, 1);
+}
 
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(
-          new ParallelRaceGroup(
-            Commands.waitSeconds(SmartDashboard.getNumber("AutoWaitTime", AutoConstants.autoWaitTime)),
-            Commands.run(() -> m_robotDrive.arcadeDrive(0, 0), m_robotDrive)
-          ),
-          new ParallelRaceGroup(
-            Commands.waitSeconds(SmartDashboard.getNumber("AutoDriveTime", AutoConstants.autoDriveDuration)),
-            Commands.run(() -> m_robotDrive.arcadeDrive(SmartDashboard.getNumber("AutoDriveSpeed", AutoConstants.autoDriveSpeed), 0), m_robotDrive)
-          )
-        );
+    return autoChooser.getAutonomousCommand();
   }
 }
