@@ -11,9 +11,13 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.AmpShootCommand;
 import frc.robot.commands.AutoCommandConfig;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.intake.Intake;
 import frc.robot.utility.AutoCommandChooser;
 import frc.robot.utility.RobotIdentity;
 import frc.robot.utility.SubsystemFactory;
@@ -23,6 +27,8 @@ public class RobotContainer {
   private RobotIdentity identity;
 
   private Drive driveSubsystem;
+  private Arm armSubsystem;
+  private Intake intakeSubSystem;
 
   private DefaultDriveCommand defaultDriveCommand;
 
@@ -44,6 +50,8 @@ public class RobotContainer {
 
   private void createSubsystems() {
     driveSubsystem = SubsystemFactory.createDriveTrain(identity);
+    armSubsystem = SubsystemFactory.createarm(identity);
+    intakeSubSystem = SubsystemFactory.createIntake(identity);
 
     AutoCommandConfig.init(driveSubsystem);
 
@@ -59,6 +67,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driverController.start().onTrue(new InstantCommand(() -> driveSubsystem.resetPose()));
     driverController.back().onTrue(new InstantCommand(() -> driveSubsystem.resetGyro()));
+    
+    if (identity == RobotIdentity.ROBOT_2024) {
+      driverController.a().onTrue(new IntakeCommand(driverController.b(), intakeSubSystem, armSubsystem));
+      driverController.x().onTrue(new AmpShootCommand(driverController.x().negate(), intakeSubSystem, armSubsystem));
+    }
   }
 
   private void setupAutoChooser() {
