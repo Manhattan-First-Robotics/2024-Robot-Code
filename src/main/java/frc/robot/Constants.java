@@ -17,15 +17,22 @@ public final class Constants {
   public static final int PDP_CAN_ID = 0;
 
   public static final double DRIVE_GEAR_RADIO = 1.0/7.29;
-  public static final double DRIVE_WHEEL_RADIUS_STOCK = Units.inchesToMeters(4.0);
+  public static final double DRIVE_WHEEL_RADIUS_STOCK = Units.inchesToMeters(3.0);
   public static final double TREAD_WARE_FACTOR = Units.inchesToMeters(0.0);
   public static final double DRIVE_WHEEL_RADIUS = DRIVE_WHEEL_RADIUS_STOCK - TREAD_WARE_FACTOR;
 
-  public static final double TRACK_WIDTH = Units.inchesToMeters(23.5);
+  public static final double TRACK_WIDTH = Units.inchesToMeters(19);
 
   public static final double DRIVE_MAX_SPEED = 3.0; // meters per second
   public static final double DRIVE_MAX_ANGULAR_SPEED = 3.0; // radians per second
 
   public static final double DRIVE_MAX_ACCELERATION = 3.0; // meters per second squared
   public static final double DRIVE_MAX_ANGULAR_ACCELERATION = 3.0; // radians per second squared
+
+public static final double DRIVE_TRAIN_RATIO = (1.0/8.0);
+
+  public static final int LEFT_FRONT_MOTOR_CHANNEL = 0;
+   public static final int LEFT_BACK_MOTOR_CHANNEL = 1;
+    public static final int RIGHT_FRONT_MOTR_CHANNEL = 2;
+     public static final int RIGHT_BACK_MOTOR_CHANNEL = 3;
 }
