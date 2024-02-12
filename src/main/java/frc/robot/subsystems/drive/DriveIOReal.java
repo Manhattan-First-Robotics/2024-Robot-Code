@@ -59,20 +59,19 @@ public class DriveIOReal implements DriveIO{
         rightMotorBack.follow(rightMotorFront);
 
         leftMotorFront.setInverted(false);
-        leftMotorBack.setInverted(false);
-        rightMotorFront.setInverted(false);
-        rightMotorBack.setInverted(false);
+        rightMotorFront.setInverted(true);
+        
 
         leftMotorFront.setSmartCurrentLimit(driveTrainCurrentLimmit);
         leftMotorBack.setSmartCurrentLimit(driveTrainCurrentLimmit);
         rightMotorFront.setSmartCurrentLimit(driveTrainCurrentLimmit);
         rightMotorBack.setSmartCurrentLimit(driveTrainCurrentLimmit);
 
-        leftEncoder.setPositionConversionFactor(driveRatio*2*Math.PI/60);
-        rightEncoder.setPositionConversionFactor(driveRatio*2*Math.PI/60);
+        leftEncoder.setPositionConversionFactor(driveRatio*2*Math.PI);
+        rightEncoder.setPositionConversionFactor(driveRatio*2*Math.PI);
 
-        leftEncoder.setVelocityConversionFactor(driveRatio*2*Math.PI);
-        rightEncoder.setVelocityConversionFactor(driveRatio*2*Math.PI);
+        leftEncoder.setVelocityConversionFactor((driveRatio*2*Math.PI)/60);
+        rightEncoder.setVelocityConversionFactor((driveRatio*2*Math.PI)/60);
 
         leftMotorFront.setIdleMode(CANSparkMax.IdleMode.kCoast);
         leftMotorBack.setIdleMode(CANSparkMax.IdleMode.kCoast);
