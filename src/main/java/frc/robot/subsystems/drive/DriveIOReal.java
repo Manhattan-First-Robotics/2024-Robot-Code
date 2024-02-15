@@ -1,22 +1,11 @@
 package frc.robot.subsystems.drive;
 
-
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
-import com.revrobotics.SparkAbsoluteEncoder;
-
-import static frc.robot.Constants.*;
 
 public class DriveIOReal implements DriveIO{
 
@@ -26,8 +15,6 @@ public class DriveIOReal implements DriveIO{
     private ADIS16448_IMU gyro;
 
     private int driveTrainCurrentLimmit = 20;
-
-    //private final int NEO_TPR = 42;
 
     private CANSparkMax leftMotorFront;
     private CANSparkMax leftMotorBack;
