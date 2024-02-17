@@ -13,8 +13,8 @@ public class Arm extends SubsystemBase {
     private final double ARM_MIN_ANGLE = Units.degreesToRadians(35);
 
 
-    public Arm() {
-       //this.io = io;
+    public Arm(ArmIO io) {
+       this.io = io;
     }
 
     @Override 
