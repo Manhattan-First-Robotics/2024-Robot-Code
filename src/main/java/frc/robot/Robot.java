@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utility.AdvantageKitHelper;
 import frc.robot.utility.RobotIdentity;
+import frc.robot.utility.SubsystemFactory;
+
+import frc.robot.subsystems.blinken.Blinken;
+import frc.robot.subsystems.arm.Arm;
 
 import static frc.robot.Constants.*;
 
@@ -43,7 +47,13 @@ public class Robot extends LoggedRobot  {
         Logger.recordMetadata("RobotIdentity", RobotIdentity.getIdentity().toString());
 
         Logger.start();
-    m_robotContainer = new RobotContainer();
+        //  *********** debug **************
+        Blinken blinkenSubsystem = new Blinken();
+        
+        
+        
+
+        //m_robotContainer = new RobotContainer();
   }
 
   /**

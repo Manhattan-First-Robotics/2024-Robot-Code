@@ -18,8 +18,8 @@ public class Arm extends SubsystemBase {
     private ArmIO io;
     public final ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
 
-    public Arm(ArmIO io) {
-       this.io = io;
+    public Arm() {
+       //this.io = io;
     }
 
     @Override 
