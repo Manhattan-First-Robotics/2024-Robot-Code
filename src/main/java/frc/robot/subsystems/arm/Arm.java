@@ -1,22 +1,17 @@
 package frc.robot.subsystems.arm;
 
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
-
-import static frc.robot.Constants.*;
-
 import org.littletonrobotics.junction.Logger;
-
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
 
     private ArmIO io;
     public final ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
+
+    private final double ARM_MAX_ANGLE = Units.degreesToRadians(283);
+    private final double ARM_MIN_ANGLE = Units.degreesToRadians(35);
+
 
     public Arm(ArmIO io) {
        this.io = io;
@@ -43,7 +38,36 @@ public class Arm extends SubsystemBase {
         return inputs.targetAngle;
     }
 
-    public void setTargetAngle(double angle){
-       inputs.targetAngle = angle;
+    private void setTargetAngle(double angle){
+        if(angle > ARM_MAX_ANGLE){
+            System.out.println("Arm Angle is too big");
+        }
+        else if(angle < ARM_MIN_ANGLE){
+            System.out.println("Arm Angle is to small");
+        }
+        else{
+            io.setAngle(angle);
+        }
+    }
+
+    public void setPosition(ArmPos pos){
+        
+        switch (pos) {
+            case START:
+                setTargetAngle(Units.degreesToRadians(0));
+                break;
+            case INTAKE:
+                setTargetAngle(Units.degreesToRadians(0));
+                break;
+            case CLIMB:
+                setTargetAngle(Units.degreesToRadians(0));
+                break;
+            case AMP:
+                setTargetAngle(Units.degreesToRadians(0));
+                break;    
+            default:
+                System.out.println("bad arm angle");
+                break;
+        }
     }
 }

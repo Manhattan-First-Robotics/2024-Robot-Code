@@ -42,12 +42,14 @@ public final class Constants {
   public static final int ARM_LEFT_CANID = 1;
 
 //#endregion 
-  public static final class IntakeConstants {
-    public static final int sparkMaxCANID = 0;
+//#region Intake Constants
+    public static final int INTAKE_TOP_CANID = 2;
+    public static final int INTAKE_BOTTOM_CANID = 3;
     
-    public static final int breakBeamChannel = 0;
+    public static final int INTAKE_BREAK_BEAM_CHANNEL = 0;
 
     public static final double intakeSpeed = 0.7;
     public static final double ampShootSpeed = 0.3;
-  }
+  
+//#endregion
 }
