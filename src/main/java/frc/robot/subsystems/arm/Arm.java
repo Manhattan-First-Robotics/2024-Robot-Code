@@ -7,54 +7,43 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
-import static frc.robot.Constants.ArmConstants;
+import static frc.robot.Constants.*;
+
+import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
-    private CANSparkMax sparkMax;
 
-    private AbsoluteEncoder encoder;
+    private ArmIO io;
+    public final ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
 
-    private SparkPIDController pidController;
-
-    double desiredAngle;
-    
-    public Arm() {
-        sparkMax = new CANSparkMax(ArmConstants.sparkMaxCANID, MotorType.kBrushless);
-
-        sparkMax.restoreFactoryDefaults();
-
-        encoder = sparkMax.getAbsoluteEncoder(Type.kDutyCycle);
-
-        pidController = sparkMax.getPIDController();
-
-        pidController.setFeedbackDevice(encoder);
-
-        pidController.setP(ArmConstants.P);
-        pidController.setI(ArmConstants.I);
-        pidController.setD(ArmConstants.D);
-        pidController.setOutputRange(ArmConstants.minOutput, ArmConstants.maxOutput);
-
-        encoder.setPositionConversionFactor(Math.PI * 2);
-        encoder.setVelocityConversionFactor(Math.PI * 2 / 60);
-
-        sparkMax.setSmartCurrentLimit(ArmConstants.currentLimit);
-        
-        desiredAngle = getAngle();
+    public Arm(ArmIO io) {
+       this.io = io;
     }
 
+    @Override 
+    public void periodic(){
+        io.updateInputs(inputs);
+
+        Logger.processInputs("Arm", inputs);
+
+        if (this.getCurrentCommand() !=null){
+            Logger.recordOutput("Arm/CurrentCommand", this.getCurrentCommand().getName());
+        }
+        else{
+            Logger.recordOutput("Arm/CurrentCommand","none");
+        }
+    }
     public double getAngle(){
-        return encoder.getPosition();
+        return inputs.currentAngle;
     }
 
-    public double getDesiredAngle(){
-        return desiredAngle;
+    public double getTargetAngle(){
+        return inputs.targetAngle;
     }
 
     public void setTargetAngle(double angle){
-        desiredAngle = angle;
-
-        pidController.setReference(angle, ControlType.kPosition);
+       inputs.targetAngle = angle;
     }
 }
