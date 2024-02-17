@@ -3,9 +3,8 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmPos;
 import frc.robot.subsystems.intake.Intake;
 
 public class IntakeCommand extends Command {
@@ -26,8 +25,8 @@ public class IntakeCommand extends Command {
 
     @Override
     public void initialize() {
-        intake.setPower(IntakeConstants.intakeSpeed);
-        arm.setTargetAngle(ArmConstants.intakeAngle);
+        intake.setPower(-.8,-.8);
+        arm.setPosition(ArmPos.INTAKE);
     }
 
     @Override
@@ -37,12 +36,12 @@ public class IntakeCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setPower(0);
-        arm.setTargetAngle(ArmConstants.driveAngle);
+        intake.setPower(0,0);
+         arm.setPosition(ArmPos.START);
     }
 
     @Override
     public boolean isFinished() {
-        return intake.getBreakBeamValue() | cancel.getAsBoolean();
+        return intake.getBeamBreak() | cancel.getAsBoolean();
     }
 }

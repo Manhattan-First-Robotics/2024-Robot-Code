@@ -3,9 +3,8 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmPos;
 import frc.robot.subsystems.intake.Intake;
 
 public class AmpShootCommand extends Command {
@@ -26,8 +25,8 @@ public class AmpShootCommand extends Command {
 
     @Override
     public void initialize() {
-        intake.setPower(IntakeConstants.ampShootSpeed);
-        arm.setTargetAngle(ArmConstants.ampShootAngle);
+        intake.setPower(.5,.5);
+        arm.setPosition(ArmPos.AMP);
     }
 
     @Override
@@ -37,8 +36,8 @@ public class AmpShootCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setPower(0);
-        arm.setTargetAngle(ArmConstants.driveAngle);
+        intake.setPower(0,0);
+        arm.setPosition(ArmPos.START);
     }
 
     @Override
