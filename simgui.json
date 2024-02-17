@@ -1,11 +1,39 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "AnalogGyro[1]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Driver/Auto Command": "String Chooser"
     }
   },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "open": true
+      }
+    }
+  },
   "NetworkTables Info": {
+    "AdvantageScope@1": {
+      "open": true
+    },
+    "Clients": {
+      "open": true
+    },
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
+    },
     "visible": true
   }
 }
