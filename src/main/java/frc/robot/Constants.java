@@ -32,9 +32,9 @@ public final class Constants {
   public static final class ArmConstants{
     public static final int sparkMaxCANID = 0;
 
-    public static final double P = 0.4;
+    public static final double P = 0;
     public static final double I = 0;
-    public static final double D = 0.00001;
+    public static final double D = 0;
     public static final double maxOutput = 1;
     public static final double minOutput = -1;
     public static final int currentLimit = 80;
