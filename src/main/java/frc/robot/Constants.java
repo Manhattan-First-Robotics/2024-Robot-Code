@@ -53,4 +53,11 @@ public final class Constants {
     public static final double ampShootSpeed = 0.3;
   
 //#endregion
+//#region Blinken Constants
+    public static final double LED_RED = 0.61 ;
+    public static final double LED_GREEN = 0.77;
+    public static final double LED_CHASER_RED = -0.31;
+    public static final double LED_CHASER_BLUE = -0.29;
+
+//#endregion
 }

@@ -48,12 +48,11 @@ public class Robot extends LoggedRobot  {
 
         Logger.start();
         //  *********** debug **************
-        Blinken blinkenSubsystem = new Blinken();
-        
-        
-        
+        Blinken blinkenSubsystem = new Blinken(9);
+        blinkenSubsystem.setColor(LED_GREEN);
 
         //m_robotContainer = new RobotContainer();
+        //  *********** end debug **************
   }
 
   /**

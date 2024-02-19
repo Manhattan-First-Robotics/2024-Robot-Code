@@ -50,11 +50,11 @@ public class RobotContainer {
   }
 
   private void createSubsystems() {
+    identity = RobotIdentity.SIMULATION; // this line of code is for testing blinken only! remove!
     driveSubsystem = SubsystemFactory.createDriveTrain(identity);
     armSubsystem = SubsystemFactory.createarm(identity);
     intakeSubSystem = SubsystemFactory.createIntake(identity);
     blinkenSubsystem  = SubsystemFactory.createBlinken(identity);
-    blinkenSubsystem.
 
     AutoCommandConfig.init(driveSubsystem);
 
