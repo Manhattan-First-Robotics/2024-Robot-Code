@@ -6,7 +6,8 @@ https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
 * setRed()
 * setBlue()
 * setGreen()
-* setDefault() - WHITE - color that is displayed when the code is running on the roborio, but before any of the methods have been called to intentionally set a color 
+* setDefault() - WHITE - color that is displayed when the code is running on the roborio, but before any of the methods have been called to intentionally set a color
+* setOff() - BLACK - actually turns leds off
 * setAllianceColor()
 * letsParty() - pattern that makes the leds dance
 
