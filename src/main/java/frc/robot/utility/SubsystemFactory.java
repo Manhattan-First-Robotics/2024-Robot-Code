@@ -4,12 +4,12 @@ import static frc.robot.Constants.*;
  
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmRealIO;
+import frc.robot.subsystems.blinkin.Blinkin;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveIOReal;
 import frc.robot.subsystems.drive.DriveIOSim;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeRealIO;
-import frc.robot.subsystems.blinken.Blinken;
 
 public final class SubsystemFactory {
 
@@ -37,10 +37,10 @@ public final class SubsystemFactory {
 
 
     
-    public static Blinken createBlinken(RobotIdentity identity) {
+    public static Blinkin createBlinken(RobotIdentity identity) {
         switch (identity) {
             case ROBOT_2024:
-                return new Blinken(9);
+                return new Blinkin(9);
             default:
                 return null;
         }

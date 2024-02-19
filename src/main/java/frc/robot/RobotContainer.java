@@ -16,7 +16,7 @@ import frc.robot.commands.AutoCommandConfig;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.blinken.Blinken;
+import frc.robot.subsystems.blinkin.Blinkin;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.utility.AutoCommandChooser;
@@ -26,7 +26,7 @@ import frc.robot.utility.SubsystemFactory;
 public class RobotContainer {
 
   private RobotIdentity identity;
-  private Blinken blinkenSubsystem;
+  private Blinkin blinkenSubsystem;
   private Drive driveSubsystem;
   private Arm armSubsystem;
   private Intake intakeSubSystem;

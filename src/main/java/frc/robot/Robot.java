@@ -12,9 +12,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utility.AdvantageKitHelper;
 import frc.robot.utility.RobotIdentity;
 import frc.robot.utility.SubsystemFactory;
-
-import frc.robot.subsystems.blinken.Blinken;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.blinkin.Blinkin;
 
 import static frc.robot.Constants.*;
 
@@ -48,7 +47,7 @@ public class Robot extends LoggedRobot  {
 
         Logger.start();
         //  *********** debug **************
-        Blinken blinkenSubsystem = new Blinken(9);
+        Blinkin blinkenSubsystem = new Blinkin(9);
         blinkenSubsystem.setColor(LED_GREEN);
 
         //m_robotContainer = new RobotContainer();
