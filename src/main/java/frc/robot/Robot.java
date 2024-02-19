@@ -47,7 +47,11 @@ public class Robot extends LoggedRobot  {
 
         Logger.start();
 
-      m_robotContainer = new RobotContainer();
+      /*************  TEST BLINKEN EXCLUSIVELY *************/
+      //m_robotContainer = new RobotContainer();
+      int pwm_port = 9;
+      Blinkin test_blinken = new Blinkin(pwm_port);
+      test_blinken.setRed();
   }
 
   /**
