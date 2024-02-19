@@ -46,12 +46,8 @@ public class Robot extends LoggedRobot  {
         Logger.recordMetadata("RobotIdentity", RobotIdentity.getIdentity().toString());
 
         Logger.start();
-        //  *********** debug **************
-        Blinkin blinkenSubsystem = new Blinkin(9);
-        blinkenSubsystem.setColor(LED_GREEN);
 
-        //m_robotContainer = new RobotContainer();
-        //  *********** end debug **************
+      m_robotContainer = new RobotContainer();
   }
 
   /**
