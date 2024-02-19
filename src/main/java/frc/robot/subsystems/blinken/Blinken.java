@@ -7,6 +7,12 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/*
+ * super cool led controller
+ * reference for blinken setup and color code table:
+ * https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+ * 
+ */
 public class Blinken extends SubsystemBase {
 
     private static Spark m_blinken;
@@ -17,8 +23,25 @@ public class Blinken extends SubsystemBase {
 
     public void setColor (double color){
         m_blinken.set(color);
+    }
 
-
+    public void setRed () {
+        this.setColor(LED_RED);
+    }
+    public void setBlue () {
+        this.setColor(LED_BLUE);
+    }
+    public void setGreen () {
+        this.setColor(LED_GREEN);
+    }
+    public void setDefault () {
+        this.setColor(LED_WHITE);
+    }
+    public void setOff () {
+        this.setColor(LED_BLACK);
+    }
+    public void letsParty () {
+        this.setColor(LED_PARTY);
     }
 
     @Override 

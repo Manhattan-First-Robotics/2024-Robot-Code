@@ -55,9 +55,11 @@ public final class Constants {
 //#endregion
 //#region Blinken Constants
     public static final double LED_RED = 0.61 ;
+    public static final double LED_BLUE = 0.87;
     public static final double LED_GREEN = 0.77;
-    public static final double LED_CHASER_RED = -0.31;
-    public static final double LED_CHASER_BLUE = -0.29;
+    public static final double LED_WHITE = 0.93;
+    public static final double LED_BLACK = 0.99;
+    public static final double LED_PARTY = -0.55;
 
 //#endregion
 }
