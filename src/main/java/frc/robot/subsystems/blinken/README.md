@@ -6,10 +6,10 @@ https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
 * setRed()
 * setBlue()
 * setGreen()
-* setDefault() 
+* setDefault() - color that is displayed when the code is running on the roborio, but before any of the methods have been called to intentionally set a color 
 * setAllianceColor()
 * letsParty() - pattern that makes the leds dance
 
 ## Notes
-When the robot is on but no code is running on the roborio, the blinken will default to the color that is stored in memory on its controller. That color is xxx
+When the robot is on but no code is running on the roborio, the blinken will default to the color that is stored in memory on its controller. That color is yellow
 
