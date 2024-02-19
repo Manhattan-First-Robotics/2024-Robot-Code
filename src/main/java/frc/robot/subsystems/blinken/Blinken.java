@@ -22,7 +22,9 @@ public class Blinken extends SubsystemBase {
     }
 
     public void setColor (double color){
-        m_blinken.set(color);
+        if ((color >= -1.0) && (color <= 1.0)) {
+            m_blinken.set(color);
+          }
     }
 
     public void setRed () {
