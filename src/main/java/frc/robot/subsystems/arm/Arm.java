@@ -2,6 +2,7 @@ package frc.robot.subsystems.arm;
 
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
@@ -9,8 +10,8 @@ public class Arm extends SubsystemBase {
     private ArmIO io;
     public final ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
 
-    private final double ARM_MAX_ANGLE = Units.degreesToRadians(283);
-    private final double ARM_MIN_ANGLE = Units.degreesToRadians(35);
+    private final double ARM_MAX_ANGLE = 294;
+    private final double ARM_MIN_ANGLE = 95;
 
 
     public Arm(ArmIO io) {
@@ -29,6 +30,10 @@ public class Arm extends SubsystemBase {
         else{
             Logger.recordOutput("Arm/CurrentCommand","none");
         }
+
+        ArmRealIO.p = SmartDashboard.getNumber("P", ArmRealIO.p);
+        ArmRealIO.i = SmartDashboard.getNumber("I", ArmRealIO.i);
+        ArmRealIO.d = SmartDashboard.getNumber("D", ArmRealIO.d);
     }
     public double getAngle(){
         return inputs.currentAngle;
@@ -54,17 +59,20 @@ public class Arm extends SubsystemBase {
         
         switch (pos) {
             case START:
-                setTargetAngle(Units.degreesToRadians(0));
+                setTargetAngle(180);
                 break;
             case INTAKE:
-                setTargetAngle(Units.degreesToRadians(0));
+                setTargetAngle(290);
                 break;
             case CLIMB:
-                setTargetAngle(Units.degreesToRadians(0));
+                setTargetAngle(180);
                 break;
             case AMP:
-                setTargetAngle(Units.degreesToRadians(0));
-                break;    
+                setTargetAngle(205);
+                break;  
+            case DRIVE:
+                setTargetAngle(105);  
+                break;
             default:
                 System.out.println("bad arm angle");
                 break;

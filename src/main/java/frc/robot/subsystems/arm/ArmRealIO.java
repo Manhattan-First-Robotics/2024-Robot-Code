@@ -21,13 +21,13 @@ public class ArmRealIO implements ArmIO {
     
     private SparkPIDController pidController;
 
-    private double p = 0;
-    private double i = 0;
-    private double d = 0;
+    public static double p = 0.0025;
+    public static double i = 0;
+    public static double d = 0;
 
     private double targetAngle;
 
-    private final double ARM_OFSET = Units.degreesToRadians(360-180);
+    private final double ARM_OFSET = Units.radiansToDegrees(2.351404666900635);
 
     public ArmRealIO(int CanIdLeft, int CanIdRight){
         sparkMaxLeft = new CANSparkMax(CanIdLeft, MotorType.kBrushless);
@@ -41,17 +41,24 @@ public class ArmRealIO implements ArmIO {
 
         sparkMaxLeft.setSmartCurrentLimit(40);
         sparkMaxRight.setSmartCurrentLimit(40);
-        sparkMaxLeft.setInverted(true);
 
-        sparkMaxRight.follow(sparkMaxLeft,true);
+        sparkMaxLeft.follow(sparkMaxRight,true);
 
-        absoluteEncoder = sparkMaxLeft.getAbsoluteEncoder(Type.kDutyCycle); 
-        absoluteEncoder.setPositionConversionFactor(Math.PI*2);
-        absoluteEncoder.setVelocityConversionFactor((Math.PI*2)/60);
+        sparkMaxRight.setInverted(true);
+
+        sparkMaxLeft.getEncoder().setPositionConversionFactor((360)/180);
+        sparkMaxRight.getEncoder().setPositionConversionFactor((360)/180);
+
+        sparkMaxLeft.getEncoder().setVelocityConversionFactor(((360)/180)/60);
+        sparkMaxLeft.getEncoder().setVelocityConversionFactor(((360)/180)/60);
+
+        absoluteEncoder = sparkMaxRight.getAbsoluteEncoder(Type.kDutyCycle); 
+        absoluteEncoder.setPositionConversionFactor(360);
+        absoluteEncoder.setVelocityConversionFactor((360)/60);
 
         absoluteEncoder.setZeroOffset(ARM_OFSET);
 
-        pidController = sparkMaxLeft.getPIDController();
+        pidController = sparkMaxRight.getPIDController();
         pidController.setFeedbackDevice(absoluteEncoder);
         pidController.setOutputRange(-1, 1);
 

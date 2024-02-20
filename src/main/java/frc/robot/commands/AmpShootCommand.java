@@ -16,16 +16,16 @@ public class AmpShootCommand extends Command {
     public AmpShootCommand(BooleanSupplier cancel, Intake intake, Arm arm){
         this.cancel = cancel;
 
-        addRequirements(intake);
+        //addRequirements(intake);
         addRequirements(arm);
 
-        this.intake = intake;
+        //this.intake = intake;
         this.arm = arm;
     }
 
     @Override
     public void initialize() {
-        intake.setPower(.5,.5);
+        //intake.setPower(.5,.5);
         arm.setPosition(ArmPos.AMP);
     }
 
@@ -36,8 +36,8 @@ public class AmpShootCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setPower(0,0);
-        arm.setPosition(ArmPos.START);
+        //intake.setPower(0,0);
+        arm.setPosition(ArmPos.DRIVE);
     }
 
     @Override

@@ -8,6 +8,8 @@ import static frc.robot.Constants.DRIVE_CONTROLLER_PORT;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -16,6 +18,8 @@ import frc.robot.commands.AutoCommandConfig;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmIO;
+import frc.robot.subsystems.arm.ArmRealIO;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.utility.AutoCommandChooser;
@@ -46,6 +50,10 @@ public class RobotContainer {
     createCommands(); // Create our commands
     configureButtonBindings(); // Configure the button bindings
     setupAutoChooser(); // Setup the auto chooser
+
+    SmartDashboard.putNumber("P", ArmRealIO.p);
+    SmartDashboard.putNumber("I", ArmRealIO.i);
+    SmartDashboard.putNumber("D", ArmRealIO.d);
   }
 
   private void createSubsystems() {
@@ -58,10 +66,11 @@ public class RobotContainer {
   }
 
   private void createCommands() {
-    defaultDriveCommand = new DefaultDriveCommand(driveSubsystem,
-        () -> driverController.getLeftTriggerAxis() - driverController.getRightTriggerAxis(),
-        () -> -driverController.getLeftX());
-    driveSubsystem.setDefaultCommand(defaultDriveCommand);
+   /// defaultDriveCommand = new DefaultDriveCommand(driveSubsystem,
+     //   () -> driverController.getLeftTriggerAxis() - driverController.getRightTriggerAxis(),
+     //   () -> -driverController.getLeftX());
+  //  driveSubsystem.setDefaultCommand(defaultDriveCommand);
+  
   }
 
   private void configureButtonBindings() {

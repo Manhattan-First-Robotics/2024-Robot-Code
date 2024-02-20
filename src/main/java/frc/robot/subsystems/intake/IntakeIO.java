@@ -6,11 +6,11 @@ public interface IntakeIO {
     @AutoLog
     class IntakeIOInputs{
         public boolean isBrake;
-        public double current;
-        public double appliedOutput;
+        public double appliedOutputTop;
+        public double appliedOutputBottom;
         public boolean beamBreak;
     }
-    default void unpdateInputs(IntakeIOInputs inputs){}
+    default void updateInputs(IntakeIOInputs inputs){}
     default void setPower(double topPower, double bottemPower){}
-    default void isBrake(boolean brake){}
+    default void setBrake(boolean isBrake){}
 }

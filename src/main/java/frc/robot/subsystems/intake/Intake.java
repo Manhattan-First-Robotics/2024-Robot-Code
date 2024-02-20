@@ -2,12 +2,7 @@ package frc.robot.subsystems.intake;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.revrobotics.CANSparkMax;
-
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.Constants.*;
 
 public class Intake extends SubsystemBase {
     private IntakeIO io;
@@ -18,7 +13,7 @@ public class Intake extends SubsystemBase {
     }
     @Override
     public void periodic() {
-        io.unpdateInputs(inputs);
+        io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
 
         if (this.getCurrentCommand() !=null){

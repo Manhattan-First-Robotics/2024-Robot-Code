@@ -38,8 +38,8 @@ public final class Constants {
 //#endregion
 //#region Arm constants
 
-  public static final int ARM_RIGHT_CANID = 0;
-  public static final int ARM_LEFT_CANID = 1;
+  public static final int ARM_RIGHT_CANID = 5;
+  public static final int ARM_LEFT_CANID = 6;
 
 //#endregion 
 //#region Intake Constants
