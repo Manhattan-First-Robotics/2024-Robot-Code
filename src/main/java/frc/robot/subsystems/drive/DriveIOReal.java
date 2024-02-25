@@ -14,7 +14,7 @@ public class DriveIOReal implements DriveIO{
 
     private ADIS16448_IMU gyro;
 
-    private int driveTrainCurrentLimmit = 20;
+    private int driveTrainCurrentLimmit = 40;
 
     private CANSparkMax leftMotorFront;
     private CANSparkMax leftMotorBack;
@@ -79,7 +79,7 @@ public class DriveIOReal implements DriveIO{
         inputs.rightPos = rightEncoder.getPosition();
         inputs.leftVel = leftEncoder.getVelocity();
         inputs.rightVel = rightEncoder.getVelocity();
-        inputs.heading = Rotation2d.fromDegrees(gyro.getGyroAngleZ());
+        inputs.heading = Rotation2d.fromDegrees(-gyro.getGyroAngleZ());
     }
 
     private void setCoast(){

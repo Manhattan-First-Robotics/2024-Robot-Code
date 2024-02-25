@@ -1,7 +1,6 @@
 package frc.robot.subsystems.arm;
 
 import org.littletonrobotics.junction.Logger;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -56,26 +55,27 @@ public class Arm extends SubsystemBase {
     }
 
     public void setPosition(ArmPos pos){
-        
+        setTargetAngle(getTargetAngleValue(pos));
+    }
+
+    public double getTargetAngleValue(ArmPos pos){
         switch (pos) {
             case START:
-                setTargetAngle(180);
-                break;
+                return 180;
             case INTAKE:
-                setTargetAngle(290);
-                break;
+                return 290;
             case CLIMB:
-                setTargetAngle(180);
-                break;
+                return 180;
             case AMP:
-                setTargetAngle(205);
-                break;  
+                return 205; 
             case DRIVE:
-                setTargetAngle(105);  
-                break;
+                return 105;
             default:
                 System.out.println("bad arm angle");
-                break;
-        }
+                return 180;}
+    }
+
+    public void setPower(double power){
+        io.setPower(power);
     }
 }

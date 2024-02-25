@@ -13,4 +13,5 @@ public interface IntakeIO {
     default void updateInputs(IntakeIOInputs inputs){}
     default void setPower(double topPower, double bottemPower){}
     default void setBrake(boolean isBrake){}
+    default boolean getBeamBreak(){ return false;}
 }

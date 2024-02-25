@@ -76,7 +76,7 @@ public class DriveIOSim implements DriveIO {
         rightEncoderSim.setDistance(-driveSim.getRightPositionMeters());
         rightEncoderSim.setRate(-driveSim.getRightVelocityMetersPerSecond());
 
-        gyroSim.setAngle(-driveSim.getHeading().getDegrees());
+        gyroSim.setAngle(driveSim.getHeading().getDegrees());
 
         inputs.isBrake = false;
         inputs.leftCurent = 0;

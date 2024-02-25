@@ -6,22 +6,24 @@ package frc.robot;
 
 import static frc.robot.Constants.DRIVE_CONTROLLER_PORT;
 
+import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AmpShootCommand;
 import frc.robot.commands.AutoCommandConfig;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.arm.ArmIO;
 import frc.robot.subsystems.arm.ArmRealIO;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.winch.Winch;
 import frc.robot.utility.AutoCommandChooser;
 import frc.robot.utility.RobotIdentity;
 import frc.robot.utility.SubsystemFactory;
@@ -33,6 +35,7 @@ public class RobotContainer {
   private Drive driveSubsystem;
   private Arm armSubsystem;
   private Intake intakeSubSystem;
+  private Winch winchSubsystem;
 
   private DefaultDriveCommand defaultDriveCommand;
 
@@ -60,17 +63,33 @@ public class RobotContainer {
     driveSubsystem = SubsystemFactory.createDriveTrain(identity);
     armSubsystem = SubsystemFactory.createarm(identity);
     intakeSubSystem = SubsystemFactory.createIntake(identity);
+    winchSubsystem = SubsystemFactory.createWinch(identity);
 
     AutoCommandConfig.init(driveSubsystem);
 
   }
 
   private void createCommands() {
-   /// defaultDriveCommand = new DefaultDriveCommand(driveSubsystem,
-     //   () -> driverController.getLeftTriggerAxis() - driverController.getRightTriggerAxis(),
-     //   () -> -driverController.getLeftX());
-  //  driveSubsystem.setDefaultCommand(defaultDriveCommand);
-  
+    defaultDriveCommand = new DefaultDriveCommand(driveSubsystem,
+        () -> driverController.getLeftTriggerAxis() - driverController.getRightTriggerAxis(),
+        () -> -driverController.getLeftX(), 
+        new DoubleSupplier() {
+          @Override
+          public double getAsDouble() {
+              if (driverController.leftBumper().getAsBoolean()) {
+                return 90;
+              }
+
+              if (driverController.rightBumper().getAsBoolean()){
+                return Math.round(driveSubsystem.getPose().getRotation().getDegrees() / 90.0) * 90.0;
+              }
+
+              return 0;
+          }
+        },
+        driverController.leftBumper().or(driverController.rightBumper())
+        );
+    driveSubsystem.setDefaultCommand(defaultDriveCommand);
   }
 
   private void configureButtonBindings() {
@@ -80,6 +99,7 @@ public class RobotContainer {
     if (identity == RobotIdentity.ROBOT_2024) {
       driverController.a().onTrue(new IntakeCommand(driverController.b(), intakeSubSystem, armSubsystem));
       driverController.x().onTrue(new AmpShootCommand(driverController.x().negate(), intakeSubSystem, armSubsystem));
+      driverController.y().onTrue(new ClimbCommand(driverController.y().negate(), armSubsystem, winchSubsystem));
     }
   }
 

@@ -35,6 +35,9 @@ public final class Constants {
    public static final int LEFT_BACK_MOTOR_CHANNEL = 2;
     public static final int RIGHT_FRONT_MOTR_CHANNEL = 3;
      public static final int RIGHT_BACK_MOTOR_CHANNEL = 4;
+  
+  public static final int WINCH_CANID = 7;
+  
 //#endregion
 //#region Arm constants
 
@@ -43,8 +46,8 @@ public final class Constants {
 
 //#endregion 
 //#region Intake Constants
-    public static final int INTAKE_TOP_CANID = 2;
-    public static final int INTAKE_BOTTOM_CANID = 3;
+    public static final int INTAKE_TOP_CANID = 9;
+    public static final int INTAKE_BOTTOM_CANID = 8;
     
     public static final int INTAKE_BREAK_BEAM_CHANNEL = 0;
 

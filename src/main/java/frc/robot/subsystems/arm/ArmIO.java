@@ -20,4 +20,7 @@ public interface ArmIO {
 
     default void setAngle(double angle) {
     }
+
+    default void setPower(double power){
+    }
 }

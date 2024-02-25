@@ -16,33 +16,33 @@ public class IntakeCommand extends Command {
     public IntakeCommand(BooleanSupplier cancel, Intake intake, Arm arm) {
         this.cancel = cancel;
 
-        //addRequirements(intake);
+        addRequirements(intake);
         addRequirements(arm);
 
-        //this.intake = intake;
+        this.intake = intake;
         this.arm = arm;
     }
 
     @Override
     public void initialize() {
-        //intake.setPower(-.8,-.8);
         arm.setPosition(ArmPos.INTAKE);
     }
 
     @Override
     public void execute() {
-        
+        if (Math.abs( arm.getAngle() - arm.getTargetAngleValue(ArmPos.INTAKE)) < 1) {
+            intake.setPower(-.6,-.6);
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
-        //intake.setPower(0,0);
+        intake.setPower(0,0);
          arm.setPosition(ArmPos.DRIVE);
     }
 
     @Override
     public boolean isFinished() {
-        //return intake.getBeamBreak() | cancel.getAsBoolean();
-        return cancel.getAsBoolean();
+        return !intake.getBeamBreak() | cancel.getAsBoolean();
     }
 }

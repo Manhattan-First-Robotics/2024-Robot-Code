@@ -8,8 +8,6 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
-import edu.wpi.first.math.util.Units;
-
 
 public class ArmRealIO implements ArmIO {
 
@@ -19,15 +17,15 @@ public class ArmRealIO implements ArmIO {
 
     private AbsoluteEncoder absoluteEncoder;
     
-    private SparkPIDController pidController;
+    public SparkPIDController pidController;
 
-    public static double p = 0.0025;
+    public static double p = 0.0075;
     public static double i = 0;
     public static double d = 0;
 
     private double targetAngle;
 
-    private final double ARM_OFSET = Units.radiansToDegrees(2.351404666900635);
+    private final double ARM_OFSET = 18.0776214599;
 
     public ArmRealIO(int CanIdLeft, int CanIdRight){
         sparkMaxLeft = new CANSparkMax(CanIdLeft, MotorType.kBrushless);
@@ -46,15 +44,15 @@ public class ArmRealIO implements ArmIO {
 
         sparkMaxRight.setInverted(true);
 
-        sparkMaxLeft.getEncoder().setPositionConversionFactor((360)/180);
-        sparkMaxRight.getEncoder().setPositionConversionFactor((360)/180);
+        sparkMaxLeft.getEncoder().setPositionConversionFactor((360.0)/180.0);
+        sparkMaxRight.getEncoder().setPositionConversionFactor((360.0)/180.0);
 
-        sparkMaxLeft.getEncoder().setVelocityConversionFactor(((360)/180)/60);
-        sparkMaxLeft.getEncoder().setVelocityConversionFactor(((360)/180)/60);
+        sparkMaxLeft.getEncoder().setVelocityConversionFactor(((360.0)/180.0)/60.0);
+        sparkMaxLeft.getEncoder().setVelocityConversionFactor(((360.0)/180.0)/60.0);
 
         absoluteEncoder = sparkMaxRight.getAbsoluteEncoder(Type.kDutyCycle); 
-        absoluteEncoder.setPositionConversionFactor(360);
-        absoluteEncoder.setVelocityConversionFactor((360)/60);
+        absoluteEncoder.setPositionConversionFactor(360.0);
+        absoluteEncoder.setVelocityConversionFactor((360.0)/60.0);
 
         absoluteEncoder.setZeroOffset(ARM_OFSET);
 
@@ -77,10 +75,18 @@ public class ArmRealIO implements ArmIO {
         inputs.appliedPower = sparkMaxLeft.getAppliedOutput();
         inputs.relitivePos1 = sparkMaxLeft.getEncoder().getPosition();
         inputs.relitivePos2 = sparkMaxRight.getEncoder().getPosition();
+
+        //TODO: Delete this after tuning
+        pidController.setP(p);
+        pidController.setI(i);
+        pidController.setD(d);
     }
     @Override
     public void setAngle(double angle){
         pidController.setReference(angle, ControlType.kPosition);
         targetAngle = angle;
+    }
+    public void setPower(double power){
+        sparkMaxRight.set(power);
     }
 }
