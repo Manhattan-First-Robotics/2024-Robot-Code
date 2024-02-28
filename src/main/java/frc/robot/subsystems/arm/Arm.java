@@ -70,6 +70,8 @@ public class Arm extends SubsystemBase {
                 return 205; 
             case DRIVE:
                 return 105;
+            case SPEAKER:
+                return 220;
             default:
                 System.out.println("bad arm angle");
                 return 180;}

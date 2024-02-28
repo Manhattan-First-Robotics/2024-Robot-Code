@@ -64,7 +64,6 @@ public class ArmRealIO implements ArmIO {
         pidController.setP(p);
         pidController.setI(i);
         pidController.setD(d);
-        
     }
     @Override
     public void updateInputs(ArmIOInputs inputs) {
@@ -75,11 +74,6 @@ public class ArmRealIO implements ArmIO {
         inputs.appliedPower = sparkMaxLeft.getAppliedOutput();
         inputs.relitivePos1 = sparkMaxLeft.getEncoder().getPosition();
         inputs.relitivePos2 = sparkMaxRight.getEncoder().getPosition();
-
-        //TODO: Delete this after tuning
-        pidController.setP(p);
-        pidController.setI(i);
-        pidController.setD(d);
     }
     @Override
     public void setAngle(double angle){
