@@ -3,8 +3,6 @@ package frc.robot.subsystems.drive;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 
-import static frc.robot.Constants.DRIVE_WHEEL_RADIUS;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -67,9 +65,6 @@ public class DriveIOReal implements DriveIO{
         leftMotorBack.setIdleMode(CANSparkMax.IdleMode.kCoast);
         rightMotorFront.setIdleMode(CANSparkMax.IdleMode.kCoast);
         rightMotorBack.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        
-       
-        //DifferentialDrive difDrive = new DifferentialDrive(leftMotorFront,rightMotorFront);
     }
 
     public void updateInputs(DriveIOInputs inputs){

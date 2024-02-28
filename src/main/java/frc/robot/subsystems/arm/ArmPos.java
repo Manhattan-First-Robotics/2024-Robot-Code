@@ -5,5 +5,6 @@ public enum ArmPos{
     DRIVE,
     INTAKE,
     CLIMB,
-    AMP
+    AMP,
+    SPEAKER
 }
