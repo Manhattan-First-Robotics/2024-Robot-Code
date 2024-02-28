@@ -3,6 +3,7 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.RobotState;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmPos;
 import frc.robot.subsystems.intake.Intake;
@@ -38,7 +39,12 @@ public class IntakeCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         intake.setPower(0,0);
-         arm.setPosition(ArmPos.DRIVE);
+        if(RobotState.isAutonomous()){
+            arm.setPosition(ArmPos.START);
+       }
+       else{
+           arm.setPosition(ArmPos.DRIVE);
+       }
     }
 
     @Override
