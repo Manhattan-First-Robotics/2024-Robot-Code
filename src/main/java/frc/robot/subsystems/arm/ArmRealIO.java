@@ -19,7 +19,7 @@ public class ArmRealIO implements ArmIO {
     
     public SparkPIDController pidController;
 
-    public static double p = 0.0075;
+    public static double p = 0.02;
     public static double i = 0;
     public static double d = 0;
 

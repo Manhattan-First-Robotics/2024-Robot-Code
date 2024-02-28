@@ -30,8 +30,8 @@ public class AmpShootCommand extends Command {
 
     @Override
     public void execute() {
-        if (Math.abs(arm.getAngle() - arm.getTargetAngleValue(ArmPos.AMP)) < 1) {
-            intake.setPower(0, 0.6);
+        if (Math.abs(arm.getAngle() - arm.getTargetAngleValue(ArmPos.AMP)) < 2) {
+            intake.setPower(0, 0.4);
         }
     }
 

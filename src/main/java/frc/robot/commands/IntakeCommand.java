@@ -30,8 +30,8 @@ public class IntakeCommand extends Command {
 
     @Override
     public void execute() {
-        if (Math.abs( arm.getAngle() - arm.getTargetAngleValue(ArmPos.INTAKE)) < 1) {
-            intake.setPower(-.6,-.6);
+        if (Math.abs( arm.getAngle() - arm.getTargetAngleValue(ArmPos.INTAKE)) < 3) {
+            intake.setPower(-.4,-.4);
         }
     }
 

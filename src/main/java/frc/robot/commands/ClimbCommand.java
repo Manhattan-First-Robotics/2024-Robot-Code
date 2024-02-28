@@ -10,7 +10,7 @@ public class ClimbCommand extends Command {
     Arm arm;
     Winch winch;
     BooleanSupplier cancel;
-
+    
     public ClimbCommand(BooleanSupplier cancel, Arm armSubsystem, Winch winchSubsystem){
         arm = armSubsystem;
         winch = winchSubsystem;

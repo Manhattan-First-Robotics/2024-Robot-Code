@@ -65,7 +65,7 @@ public class Arm extends SubsystemBase {
             case INTAKE:
                 return 290;
             case CLIMB:
-                return 180;
+                return 178;
             case AMP:
                 return 205; 
             case DRIVE:

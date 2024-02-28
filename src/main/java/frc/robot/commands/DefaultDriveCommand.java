@@ -47,7 +47,7 @@ public class DefaultDriveCommand extends Command {
       // -pidController.calculate(subsystem.getPose().getRotation().getDegrees(), targetRotation.getAsDouble()));
 
       wheelSpeeds = DifferentialDrive.arcadeDriveIK(-Joystick.JoystickInput(xSpeed.getAsDouble(), 2, 0.02, .75),
-        Joystick.JoystickInput(pidController.calculate(subsystem.getPose().getRotation().getDegrees(), targetRotation.getAsDouble()), 2, 0.02, .75), false);
+        Joystick.JoystickInput(pidController.calculate(subsystem.getPose().getRotation().getDegrees(), targetRotation.getAsDouble()), 2, 0.02, 0.75), false);
       subsystem.setPowers(wheelSpeeds.left, wheelSpeeds.right);
 
       return;

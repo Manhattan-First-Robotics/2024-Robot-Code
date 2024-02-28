@@ -6,8 +6,10 @@ package frc.robot;
 
 import static frc.robot.Constants.DRIVE_CONTROLLER_PORT;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -100,10 +102,18 @@ public class RobotContainer {
       driverController.a().onTrue(new IntakeCommand(driverController.b(), intakeSubSystem, armSubsystem));
       driverController.x().onTrue(new AmpShootCommand(driverController.x().negate(), intakeSubSystem, armSubsystem));
       driverController.y().onTrue(new ClimbCommand(driverController.y().negate(), armSubsystem, winchSubsystem));
+      //driverController.povDown().onFalse(winchSubsystem.setPower(0));
     }
   }
 
   private void setupAutoChooser() {
+    NamedCommands.registerCommand("intake", new IntakeCommand(new BooleanSupplier() {
+      @Override
+      public boolean getAsBoolean() {
+          return false;
+      }
+    }, intakeSubSystem, armSubsystem));
+    
     autoChooser = new AutoCommandChooser();
 
     // Register all the supported auto commands

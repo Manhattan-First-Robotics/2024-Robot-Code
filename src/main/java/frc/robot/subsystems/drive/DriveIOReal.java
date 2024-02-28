@@ -2,6 +2,9 @@ package frc.robot.subsystems.drive;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+
+import static frc.robot.Constants.DRIVE_WHEEL_RADIUS;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -54,11 +57,11 @@ public class DriveIOReal implements DriveIO{
         rightMotorFront.setSmartCurrentLimit(driveTrainCurrentLimmit);
         rightMotorBack.setSmartCurrentLimit(driveTrainCurrentLimmit);
 
-        leftEncoder.setPositionConversionFactor(driveRatio*2*Math.PI);
-        rightEncoder.setPositionConversionFactor(driveRatio*2*Math.PI);
+        leftEncoder.setPositionConversionFactor(driveRatio*2*Math.PI*wheelRadius);
+        rightEncoder.setPositionConversionFactor(driveRatio*2*Math.PI*wheelRadius);
 
-        leftEncoder.setVelocityConversionFactor((driveRatio*2*Math.PI)/60);
-        rightEncoder.setVelocityConversionFactor((driveRatio*2*Math.PI)/60);
+        leftEncoder.setVelocityConversionFactor(driveRatio*2*Math.PI*wheelRadius/60);
+        rightEncoder.setVelocityConversionFactor(driveRatio*2*Math.PI*wheelRadius/60);
 
         leftMotorFront.setIdleMode(CANSparkMax.IdleMode.kCoast);
         leftMotorBack.setIdleMode(CANSparkMax.IdleMode.kCoast);
