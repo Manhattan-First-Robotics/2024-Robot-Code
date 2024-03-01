@@ -1,23 +1,10 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.4145689026846626,
-      "y": 7.0
-    },
-    "rotation": 0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
-      "commands": [
-        {
-          "type": "path",
-          "data": {
-            "pathName": "sp1toAmp"
-          }
-        }
-      ]
+      "commands": []
     }
   },
   "folder": null,

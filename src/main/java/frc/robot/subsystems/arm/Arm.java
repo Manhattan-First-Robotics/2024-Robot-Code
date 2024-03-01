@@ -65,13 +65,13 @@ public class Arm extends SubsystemBase {
             case INTAKE:
                 return 290;
             case CLIMB:
-                return 178;
+                return 190;
             case AMP:
                 return 205; 
             case DRIVE:
                 return 105;
             case SPEAKER:
-                return 220;
+                return 180;
             default:
                 System.out.println("bad arm angle");
                 return 180;}

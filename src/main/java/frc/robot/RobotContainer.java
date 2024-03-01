@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AmpShootCommand;
+import frc.robot.commands.ArmClimbCommand;
 import frc.robot.commands.ArmDriveCommand;
 import frc.robot.commands.AutoCommandConfig;
 import frc.robot.commands.ClimbCommand;
@@ -99,11 +100,12 @@ public class RobotContainer {
     
     if (identity == RobotIdentity.ROBOT_2024) {
       driverController.a().onTrue(new IntakeCommand(driverController.b(), intakeSubSystem, armSubsystem));
-      driverController.x().onTrue(new AmpShootCommand(driverController.b().negate(), intakeSubSystem, armSubsystem));
+      driverController.x().onTrue(new AmpShootCommand(driverController.b(), intakeSubSystem, armSubsystem));
       driverController.y().onTrue(new ArmDriveCommand(driverController.b(), armSubsystem));
       driverController.povLeft().onTrue(new ManualArmCommand(driverController.povLeft().negate(), armSubsystem, () -> driverController.getRightY()));
       driverController.povDown().onTrue(new ClimbCommand(driverController.b(), winchSubsystem, 0.5));
       driverController.povUp().onTrue(new SpeakerCommand(driverController.povUp().negate(), intakeSubSystem, armSubsystem));
+      driverController.start().toggleOnTrue(new ArmClimbCommand(intakeSubSystem, armSubsystem));
     }
   }
 
@@ -114,16 +116,20 @@ public class RobotContainer {
           return false;
       }
     }, intakeSubSystem, armSubsystem));
+    NamedCommands.registerCommand("shoot", new AmpShootCommand(new BooleanSupplier() {
+      @Override
+      public boolean getAsBoolean() {
+        return false;
+      }
+    }, intakeSubSystem, armSubsystem));
     
     autoChooser = new AutoCommandChooser();
 
     // Register all the supported auto commands
     autoChooser.registerDefaultCreator("Do Nothing", null);
-
-    // Test auto commands that we only register with the chooser if we are not running in competition
-    if (!Constants.COMPETITION_MODE) {
-        autoChooser.registerCreator("Test", () -> new PathPlannerAuto("TestAuto"));
-    }
+    autoChooser.registerCreator("Do Nothing", null);
+    autoChooser.registerCreator("Test", () -> new PathPlannerAuto("PracticeMatches"));
+    
 
     // Setup the chooser in shuffleboard
     autoChooser.setup("Driver", 0, 0, 3, 1);

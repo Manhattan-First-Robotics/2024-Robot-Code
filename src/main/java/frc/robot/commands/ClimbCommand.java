@@ -16,6 +16,8 @@ public class ClimbCommand extends Command {
 
         this.addRequirements(winchSubsystem);
 
+        this.multiplier = multiplier;
+
         this.cancel = cancel;
     }
 

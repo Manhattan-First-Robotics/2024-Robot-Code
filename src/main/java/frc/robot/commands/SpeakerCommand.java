@@ -29,14 +29,15 @@ public class SpeakerCommand extends Command {
 
     @Override
     public void execute() {
-        if (Math.abs( armSubsystem.getAngle() - armSubsystem.getTargetAngleValue(ArmPos.INTAKE)) < 3) {
-            intakeSubSystem.setPower(1,1);
+        if (Math.abs( armSubsystem.getAngle() - armSubsystem.getTargetAngleValue(ArmPos.SPEAKER)) < 3) {
+            intakeSubSystem.setPower(0.6,0.6);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
         armSubsystem.setPosition(ArmPos.DRIVE);
+        intakeSubSystem.setPower(0, 0);
     }
 
     @Override

@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-  public static final boolean COMPETITION_MODE = false;
+  public static final boolean COMPETITION_MODE = true;
 
   // Xbox Controllers Port Indexes
   public static final int DRIVE_CONTROLLER_PORT = 0;
@@ -46,8 +46,8 @@ public final class Constants {
 
 //#endregion 
 //#region Intake Constants
-    public static final int INTAKE_TOP_CANID = 9;
-    public static final int INTAKE_BOTTOM_CANID = 8;
+    public static final int INTAKE_TOP_CANID = 8;
+    public static final int INTAKE_BOTTOM_CANID = 9;
     
     public static final int INTAKE_BREAK_BEAM_CHANNEL = 0;
 
