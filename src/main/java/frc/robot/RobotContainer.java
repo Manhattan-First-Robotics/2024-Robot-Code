@@ -128,7 +128,13 @@ public class RobotContainer {
     // Register all the supported auto commands
     autoChooser.registerDefaultCreator("Do Nothing", null);
     autoChooser.registerCreator("Do Nothing", null);
-    autoChooser.registerCreator("Test", () -> new PathPlannerAuto("PracticeMatches"));
+    autoChooser.registerCreator("sp2Note1ReallyWide", () -> new PathPlannerAuto("sp2Note1ReallyWide"));
+    autoChooser.registerCreator("sp2Note1Wide", () -> new PathPlannerAuto("sp2Note1Wide"));
+    autoChooser.registerCreator("sp1Note1", () -> new PathPlannerAuto("sp1Note1"));
+    autoChooser.registerCreator("sp2Note1", () -> new PathPlannerAuto("sp2Note1"));
+    autoChooser.registerCreator("sp1Note4", () -> new PathPlannerAuto("sp1Note4"));
+    autoChooser.registerCreator("sp1Note1Note4", () -> new PathPlannerAuto("sp1Note1Note4"));
+    autoChooser.registerCreator("sp1Amp", () -> new PathPlannerAuto("sp1Amp"));
     
 
     // Setup the chooser in shuffleboard
